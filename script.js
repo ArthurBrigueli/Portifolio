@@ -9,6 +9,14 @@ const contact = document.querySelector('.contact')
 
 
 
+const img_project = document.querySelector('.img_project')
+const name_project = document.querySelector('.name_project')
+const date_project = document.querySelector('.date_project')
+const linguage_project = document.querySelector('.linguage_project')
+const botao_link_project = document.querySelector('.botao_link_project')
+const container_projeto = document.querySelector('.container-projetos')
+
+
 contact.addEventListener('click', ()=>{
     ativarContato()
 })
@@ -103,30 +111,50 @@ const gitHubStatus = async()=>{
     
 }
 
-const repositorio = async()=>{
-    const data = await getRepositorio()
-    const container = document.querySelector('.container-secundario')
-    data.map(item=>{
-        let project = document.createElement('div')
-        project.innerHTML = `
-            <div class="project">
-                <div>
-                    <span class="nameRepositorio">${item.name}</span>
-                    <span>${Intl.DateTimeFormat('pt-BR').format(new Date(item.created_at))}</span>
-                </div>
-                <div>
-                    <a class="url-repositorio" href="${item.html_url}" target="_blank">Link do repositorio</a>
-                    <span><span class="circle"></span>${item.language}</span>
-                </div>
-            </div>
-        `
-        container.appendChild(project)
+
+const container_projeto_api = document.querySelector('.container_projeto_api')
+
+const carregar_projetos = document.querySelector('.botao_carregar')
+
+carregar_projetos.addEventListener('click', ()=>{
+    carregarprojetos()
+})
+
+
+function carregarprojetos(){
+    const repositorio = async()=>{
+        const data = await getRepositorio()
+    
+        data.map(item=>{
+           if(item.name == 'ArthurBrigueli' || item.name == "Interactive-card-Responsive"|| item.name == "temperature-of-your-city-js" || item.name == "Pokedex-js"){
+            return
+           }else{
+                const project = document.createElement('div')
+                project.innerHTML = `
+                    <div class="project">
+                        <div class="container-image-project">
+                            <img class="img_project" src="img-pages/GitHub-Mark.png" alt="">
+                            <p class="name_project">${item.name}</p>
+                        </div>
+                        <div class="container-info-project">
+                            <span class="date_project">${item.created_at}</span>
+                            <span class="linguage_project">${item.language}</span>
+                            <a class="botao_link_project" href="${item.clone_url}" target="_blank"><button>GitHub</button></a>
+                        </div>
+                    </div>
+                `
+                container_projeto_api.appendChild(project)
+           }
+        }
+        )
     }
-    )
+    carregar_projetos.remove()
+    repositorio()
 }
 
+
+
 gitHubStatus()
-repositorio()
 
 
 
